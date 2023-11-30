@@ -1,8 +1,8 @@
 # Dokumentasi 
 
 ## Registrasi Akun
-Route : /users/register 
-Method : POST
+Route : /users/register\n
+Method : POST\n
 req.body :
 ```json
 {
@@ -14,8 +14,8 @@ req.body :
 ```
 
 ## Login Akun
-Route : /users/login
-Method : POST
+Route : /users/login\n
+Method : POST\n
 req.body
 ```json
 {
