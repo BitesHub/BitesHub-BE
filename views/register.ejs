@@ -1,0 +1,26 @@
+<div class="container">
+  <h1>Ini Register</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <form method="post", action="/users/register">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="username" name="username" class="form-control" id="username" placeholder="Masukkan username" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input type="email" name="email" class="form-control" id="email" placeholder="Masukkan Email" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" id="password">
+        </div>
+        <div class="mb-3">
+          <label for="checkPass" class="form-label">Password</label>
+          <input type="password" name="confirmPass" class="form-control" id="confirmPass">
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+    </div>
+  </div>
+</div>
