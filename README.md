@@ -1,6 +1,6 @@
-#Dokumentasi 
+# Dokumentasi 
 
-##Registrasi Akun
+## Registrasi Akun
 Route : /users/register 
 Method : POST
 req.body :
@@ -11,7 +11,7 @@ req.body :
     "confirmPass": "password"
 }
 
-##Login Akun
+## Login Akun
 Route : /users/login
 Method : POST
 req.body
