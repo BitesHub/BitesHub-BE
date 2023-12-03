@@ -4,21 +4,13 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 
-require('../utils/db');
-const User = require('../model/user');
-
-router.get('/', (req, res) => {
-	res.render('register', {
-		title: 'Halaman Register',
-		layout: './layouts/main-layout',
-	});
-});
+const { addDataUsers, getDataByKey } = require('../utils/firestoreClient');
 
 router.post(
 	'/',
 	[
 		check('username', 'Username Sudah Digunakan!').custom(async (username) => {
-			const dupe = await User.findOne({ username });
+			const dupe = await getDataByKey('username', username);
 			if (dupe) throw new Error();
 			return true;
 		}),
@@ -26,7 +18,7 @@ router.post(
 			.isEmail()
 			.withMessage('Email yang anda input tidak valid')
 			.custom(async (email) => {
-				const dupe = await User.findOne({ email });
+				const dupe = await getDataByKey('email', email);
 				if (dupe) throw new Error('Email Sudah Digunakan!');
 				return true;
 			}),
@@ -44,21 +36,25 @@ router.post(
 	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			res.json(errors.array());
+			res.status(400).json({
+				error: true,
+				status: 'failed',
+				message: errors.array(),
+			});
 		} else {
 			const { username, email, password } = req.body;
 			const saltRound = 10;
 			bcrypt
 				.hash(password, saltRound)
 				.then((hash) => {
-					User.insertMany({
-						username,
-						email,
-						password: hash,
-					});
+					addDataUsers({ username, email, password: hash });
 				})
 				.then(() => {
-					res.redirect('/login');
+					res.status(201).json({
+						error: false,
+						status: 'success',
+						message: 'User Created',
+					});
 				});
 		}
 	}

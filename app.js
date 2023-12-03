@@ -8,7 +8,6 @@ const expressLayouts = require('express-ejs-layouts');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
-const logoutRouter = require('./routes/logout');
 const registerRouter = require('./routes/register');
 
 const app = express();
@@ -27,7 +26,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
-app.use('/logout', logoutRouter);
 app.use('/register', registerRouter);
 
 // catch 404 and forward to error handler

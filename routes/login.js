@@ -2,45 +2,60 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const cookieParser = require('cookie-parser');
 const { makeToken } = require('../utils/auth');
 require('dotenv').config();
 
-require('../utils/db');
-const User = require('../model/user');
-router.use(cookieParser());
-
-router.get('/', (req, res) => {
-	res.render('login', {
-		title: 'Halaman Login',
-		layout: './layouts/main-layout',
-	});
-});
+const { getDataByKey } = require('../utils/firestoreClient');
 
 router.post(
 	'/',
-	check('email', 'Email yang anda masukkan tidak valid').isEmail(),
+	check('email', 'Email invalid').isEmail(),
 	async (req, res) => {
 		const errors = validationResult(req);
+		console.log(errors);
 		if (!errors.isEmpty()) {
-			res.json(errors.array());
+			res.status(400).json({
+				errror: true,
+				status: 'failed',
+				message: errors.array(),
+			});
 			return false;
 		}
 		const { email, password } = req.body;
-		const cek = await User.findOne({ email });
-		const decrypt = bcrypt.compare(password, cek.password);
-		if (cek && decrypt) {
-			const payload = {
-				id: cek._id,
-				name: cek.username,
-			};
-			const expiresIn = 60 * 15;
-			const token = makeToken(payload, process.env.JWT_SECRET_TOKEN, expiresIn);
-			// disini masih pake cookie, karna mo coba di web
-			res.cookie('token', token, { httpOnly: true });
-			res.redirect('/');
+		const cek = await getDataByKey('email', email);
+		if (cek) {
+			const decrypt = await bcrypt.compare(password, cek.password);
+			console.log(decrypt);
+			if (decrypt) {
+				const payload = {
+					id: cek._id,
+					username: cek.username,
+				};
+				const token = makeToken(payload, process.env.JWT_SECRET_TOKEN);
+
+				res.status(200).json({
+					error: false,
+					status: 'success',
+					message: 'Login success',
+					loginResult: {
+						userId: cek._id,
+						username: cek.username,
+						token,
+					},
+				});
+			} else {
+				res.status(401).json({
+					errror: true,
+					status: 'failed',
+					message: 'Login failed, username or password wrong',
+				});
+			}
 		} else {
-			res.send('email atau password salah!');
+			res.status(401).json({
+				errror: true,
+				status: 'failed',
+				message: 'Login failed, username or password wrong',
+			});
 		}
 	}
 );
