@@ -8,6 +8,8 @@ const expressLayouts = require('express-ejs-layouts');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
+const postsRouter = require('./routes/posts');
+const recipeRouter = require('./routes/recipe');
 const registerRouter = require('./routes/register');
 
 const app = express();
@@ -27,6 +29,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+app.use('/posts', postsRouter);
+app.use('/recipes', recipeRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
