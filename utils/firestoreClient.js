@@ -2,15 +2,15 @@ const Firestore = require('@google-cloud/firestore');
 const dayjs = require('dayjs');
 
 // buat testing
-require('dotenv').config();
-const path = require('path');
-const rootPath =
-	process.env.ROOT_PATH || 'D:/Bangkit Things/CapstoneProject/BitesHub-App';
-const credentialsPath = path.join(rootPath, '/credentials.json');
+// require('dotenv').config();
+// const path = require('path');
+// const rootPath =
+// 	process.env.ROOT_PATH || 'D:/Bangkit Things/CapstoneProject/BitesHub-App';
+// const credentialsPath = path.join(rootPath, '/credentials.json');
 
 const db = new Firestore({
 	projectId: 'biteshub-app',
-	keyFilename: credentialsPath,
+	keyFilename: 'credentials.json',
 });
 
 // add data Users

@@ -1,5 +1,8 @@
 const express = require('express');
 const { authenticateToken } = require('../utils/auth');
+
+const multer = require('multer');
+const { Storage } = require('@google-cloud/storage');
 const {
 	addPosts,
 	showData,
@@ -10,6 +13,30 @@ const {
 } = require('../utils/firestoreClient');
 
 const router = express.Router();
+
+const fileFilter = (req, file, cb) => {
+	if (
+		file.mimetype === 'image/png' ||
+		file.mimetype === 'image/jpg' ||
+		file.mimetype === 'image/jpeg'
+	) {
+		cb(null, true);
+	} else {
+		cb(null, false);
+	}
+};
+
+const storage = new Storage({
+	projectId: 'biteshub-app',
+	keyFilename: 'credentials.json',
+});
+
+const bucket = storage.bucket('biteshub');
+
+const upload = multer({
+	storage: multer.memoryStorage(),
+	fileFilter,
+}).single('fileUrl');
 
 router.get('/', authenticateToken, async (req, res) => {
 	const data = await showData('posts').catch((error) => {
@@ -33,8 +60,16 @@ router.get('/', authenticateToken, async (req, res) => {
 	}
 });
 
-router.post('/', authenticateToken, async (req, res) => {
-	const { username, description, fileUrl } = req.body;
+router.post('/', authenticateToken, upload, async (req, res) => {
+	const { username, description } = req.body;
+
+	const fileName = new Date().getTime() + '-' + req.file.originalname;
+	const fileBuffer = req.file.buffer;
+	const file = bucket.file(fileName);
+	await file.save(fileBuffer);
+
+	const fileUrl = `https://storage.googleapis.com/biteshub/${fileName}`;
+
 	addPosts({ username, description, fileUrl })
 		.then(() => {
 			res.status(201).json({

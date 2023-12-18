@@ -1,6 +1,7 @@
 <div class="container">
   <%= title %>
-  <form action="/logout" method="post">
-    <button type="submit" class="btn btn-danger">Logout</button>
+  <form action="/posts/kirimFile" method="post" enctype="multipart/form-data">
+    <input type="file" id="gambar" name="gambar">
+    <button type="submit" class="btn btn-danger">Kirim</button>
   </form>
 </div>
