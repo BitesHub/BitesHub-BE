@@ -11,7 +11,7 @@ router.post(
 	[
 		check('username', 'Username Sudah Digunakan!').custom(async (username) => {
 			const dupe = await getDataByKey('users', 'username', username);
-			if (dupe) throw new Error();
+			if (dupe.data) throw new Error();
 			return true;
 		}),
 		body('email')
@@ -19,7 +19,7 @@ router.post(
 			.withMessage('Email yang anda input tidak valid')
 			.custom(async (email) => {
 				const dupe = await getDataByKey('users', 'email', email);
-				if (dupe) throw new Error('Email Sudah Digunakan!');
+				if (dupe.data) throw new Error('Email Sudah Digunakan!');
 				return true;
 			}),
 		body('password')

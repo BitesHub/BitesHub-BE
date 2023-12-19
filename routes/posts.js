@@ -61,7 +61,7 @@ router.get('/', authenticateToken, async (req, res) => {
 });
 
 router.post('/', authenticateToken, upload, async (req, res) => {
-	const { username, description } = req.body;
+	const { description } = req.body;
 
 	const fileName = new Date().getTime() + '-' + req.file.originalname;
 	const fileBuffer = req.file.buffer;
@@ -70,7 +70,7 @@ router.post('/', authenticateToken, upload, async (req, res) => {
 
 	const fileUrl = `https://storage.googleapis.com/biteshub/${fileName}`;
 
-	addPosts({ username, description, fileUrl })
+	addPosts({ description, fileUrl })
 		.then(() => {
 			res.status(201).json({
 				error: false,

@@ -26,13 +26,12 @@ const addDataUsers = async (data) => {
 
 // adding post
 const addPosts = async (data) => {
-	const { username, description, fileUrl } = data;
+	const { description, fileUrl } = data;
 	const docRef = db.collection('posts');
 	const createdAt = dayjs().format('DD-MM-YYYY');
 	console.log(createdAt);
 	await docRef
 		.add({
-			username,
 			description,
 			fileUrl,
 			createdAt,
@@ -72,7 +71,11 @@ const getDataByKey = async (collection, key, value) => {
 	if (snapshot.empty) {
 		return false;
 	} else {
-		return snapshot.docs[0].data();
+		const result = {
+			data: snapshot.docs[0].data(),
+			id: snapshot.docs[0].id,
+		};
+		return result;
 	}
 };
 

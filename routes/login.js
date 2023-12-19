@@ -23,22 +23,21 @@ router.post(
 		}
 		const { email, password } = req.body;
 		const cek = await getDataByKey('users', 'email', email);
-		if (cek) {
-			const decrypt = await bcrypt.compare(password, cek.password);
+		if (cek.data) {
+			const decrypt = await bcrypt.compare(password, cek.data.password);
 			if (decrypt) {
 				const payload = {
-					id: cek._id,
-					username: cek.username,
+					id: cek.id,
+					username: cek.data.username,
 				};
 				const token = makeToken(payload, process.env.JWT_SECRET_TOKEN);
-
 				res.status(200).json({
 					error: false,
 					status: 'success',
 					message: 'Login success',
 					loginResult: {
-						userId: cek._id,
-						username: cek.username,
+						userId: cek.id,
+						username: cek.data.username,
 						token,
 					},
 				});
