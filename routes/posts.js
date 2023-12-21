@@ -51,11 +51,21 @@ router.get('/', authenticateToken, async (req, res) => {
 			postsList: 'data masih kosong',
 		});
 	} else {
+		const postsList = [];
+		data.forEach((element) => {
+			const each = {
+				id: element.id,
+				createdAt: element.data.createdAt,
+				description: element.data.description,
+				fileUrl: element.data.fileUrl,
+			};
+			postsList.push(each);
+		});
 		res.status(200).json({
 			error: false,
 			status: 'success',
 			message: 'Posts fetched successfully',
-			postsList: data,
+			postsList,
 		});
 	}
 });
