@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const { authenticateToken } = require('../utils/auth');
 const multer = require('multer');
+
 const { Storage } = require('@google-cloud/storage');
+
 const {
 	addRecipe,
 	showData,
@@ -62,13 +64,26 @@ router.post('/', authenticateToken, upload, async (req, res) => {
 
 router.get('/', authenticateToken, async (req, res) => {
 	showData('recipes')
-		.then((result) => {
-			if (result) {
+		.then((data) => {
+			if (data) {
+				const recipesList = [];
+				data.forEach((element) => {
+					const each = {
+						id: element.id,
+						createdAt: element.data.createdAt,
+						ingredients: element.data.ingredients,
+						fileUrl: element.data.fileUrl,
+						description: element.data.description,
+						title: element.data.title,
+						username: element.data.username,
+					};
+					recipesList.push(each);
+				});
 				res.status(200).json({
 					error: false,
 					status: 'success',
 					message: 'Success get all recipes',
-					data: result,
+					recipesList,
 				});
 			} else {
 				res.status(200).json({

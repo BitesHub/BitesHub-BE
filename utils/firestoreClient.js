@@ -48,7 +48,6 @@ const showData = async (collection) => {
 			id: doc.id,
 			data: doc.data(),
 		});
-		console.log(doc.id, '=>', doc.data());
 	});
 	JSON.stringify(data);
 	return data;
@@ -116,7 +115,9 @@ const showComment = async (collection, id) => {
 	snapshot.forEach((doc) => {
 		data.push({
 			id: doc.id,
-			data: doc.data(),
+			createdAt: doc.data().createdAt,
+			comment: doc.data().comment,
+			username: doc.data().username,
 		});
 	});
 	JSON.stringify(data);
