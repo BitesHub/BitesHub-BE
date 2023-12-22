@@ -78,6 +78,25 @@ const getDataByKey = async (collection, key, value) => {
 	}
 };
 
+// get recipe by ingredient
+const getRecipeByIngredient = async (value) => {
+	const usersRef = db.collection('recipes');
+	const snapshot = await usersRef.where('username', '==', value).get();
+	if (snapshot.empty) {
+		return false;
+	} else {
+		const data = [];
+		snapshot.forEach((doc) => {
+			console.log(doc.id, '=>', doc.data());
+		});
+		const result = {
+			data: snapshot.data(),
+			id: snapshot.id,
+		};
+		return result;
+	}
+};
+
 //update data
 const updateData = async (data) => {
 	const { id, email, password, username } = data;
@@ -169,4 +188,5 @@ module.exports = {
 	deleteDoc,
 	addRecipe,
 	deleteRecipe,
+	getRecipeByIngredient,
 };

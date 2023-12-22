@@ -72,7 +72,14 @@ json :
 	"error": false,
 	"status": "success",
 	"message": "Posts fetched successfully",
-	"postsList": "data masih kosong"
+	"postsList": [
+		{
+			"id": "id-postingan",
+			"createdAt": "date-created",
+			"description": "deskripsi-postingan",
+			"fileUrl": "asset-url"
+		}
+	]
 }
 ```
 
@@ -84,7 +91,6 @@ request body :
 
 ```json
 {
-	"username": "username",
 	"description": "description",
 	"fileUrl": "file Url"
 }
@@ -116,20 +122,18 @@ json :
 	"status": "success",
 	"message": "Post fetched successfully",
 	"postDetail": {
-        "createdAt": "createdAt",
-        "description": "description",
-        "fileUrl": "fileUrl",
-        "username": "username"
-    },
+		"createdAt": "createdAt",
+		"description": "description",
+		"fileUrl": "fileUrl",
+		"username": "username"
+	},
 	"allComment": [
 		{
 			"id": "idComment",
-			"data": {
-				"createdAt": "createdAt",
-				"comment": "comment",
-				"username": "username"
-			}
-		},
+			"createdAt": "createdAt",
+			"comment": "comment",
+			"username": "username"
+		}
 	]
 }
 ```
@@ -202,14 +206,12 @@ json :
 	"data": [
 		{
 			"id": "idrecipe",
-			"data": {
-				"createdAt": "createdAt",
-				"ingredients": "ingredients",
-				"description": "descriptions",
-				"fileUrl": "fileUrl",
-				"title": "title",
-				"username": "username"
-			}
+			"createdAt": "createdAt",
+			"ingredients": "ingredients",
+			"description": "descriptions",
+			"fileUrl": "fileUrl",
+			"title": "title",
+			"username": "username"
 		}
 	]
 }
@@ -256,7 +258,7 @@ json :
 	"error": false,
 	"status": "success",
 	"message": "Success get recipe details",
-	"data": {
+	"recipesList": {
 		"createdAt": "createdAt",
 		"ingredients": "ingredients",
 		"description": "description",
@@ -275,16 +277,18 @@ request body :
 
 ```json
 {
-  "id": "idRecipe"
+	"id": "idRecipe"
 }
 ```
+
 response
 status code (200)
 json :
+
 ```json
 {
 	"error": false,
 	"status": "success",
-	"message": "Berhasil hapus resep",
+	"message": "Berhasil hapus resep"
 }
-````
+```

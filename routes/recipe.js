@@ -10,6 +10,7 @@ const {
 	showData,
 	deleteRecipe,
 	getDataById,
+	getRecipeByIngredient,
 } = require('../utils/firestoreClient');
 
 const fileFilter = (req, file, cb) => {
@@ -101,6 +102,13 @@ router.get('/', authenticateToken, async (req, res) => {
 			});
 		});
 });
+
+// router.get('/search', async (req, res) => {
+// 	const ingredient = req.query.ingredient;
+// 	getRecipeByIngredient(ingredient).then((result) => {
+// 		res.json(result);
+// 	});
+// });
 
 router.get('/detail', authenticateToken, async (req, res) => {
 	getDataById('recipes', req.query.id)
